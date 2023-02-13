@@ -121,6 +121,8 @@ class TransformerModel(Model):
             feature = torch.from_numpy(x_train_values[indices[i : i + self.batch_size]]).float().to(self.device)
             label = torch.from_numpy(y_train_values[indices[i : i + self.batch_size]]).float().to(self.device)
 
+            # print(feature[0])
+            
             pred = self.model(feature)
             loss = self.loss_fn(pred, label)
 

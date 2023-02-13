@@ -108,7 +108,7 @@ class TransformerModel(Model):
         for data in data_loader:
             feature = data[:, :, 0:-1].to(self.device)
             label = data[:, -1, -1].to(self.device)
-
+            print(feature)
             pred = self.model(feature.float())  # .float()
             loss = self.loss_fn(pred, label)
 
@@ -145,7 +145,7 @@ class TransformerModel(Model):
         evals_result=dict(),
         save_path=None,
     ):
-
+        print("--------------------fit")
         dl_train = dataset.prepare("train", col_set=["feature", "label"], data_key=DataHandlerLP.DK_L)
         dl_valid = dataset.prepare("valid", col_set=["feature", "label"], data_key=DataHandlerLP.DK_L)
 

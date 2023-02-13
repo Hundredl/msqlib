@@ -10,7 +10,11 @@ import fire
 import ruamel.yaml as yaml
 from qlib.config import C
 from qlib.model.trainer import task_train
+import os,sys
+sys.path.append("/home/wyy/workspace/ms/qlib")
 
+# os.chdir(sys.path[0])
+# sys.path.append("../..")
 
 def get_path_list(path):
     if isinstance(path, str):
@@ -35,10 +39,12 @@ def sys_config(config, config_path):
     # abspath
     for p in get_path_list(sys_config.get("path", [])):
         sys.path.append(p)
+        print(p)
 
     # relative path to config path
     for p in get_path_list(sys_config.get("rel_path", [])):
         sys.path.append(str(Path(config_path).parent.resolve().absolute() / p))
+
 
 
 # workflow handler function
@@ -48,12 +54,13 @@ def workflow(config_path, experiment_name="workflow", uri_folder="mlruns"):
     User can run the whole Quant research workflow defined by a configure file
     - the code is located here ``qlib/workflow/cli.py`
     """
+    print(config_path)
+    print(os.getcwd())
     with open(config_path) as fp:
         config = yaml.safe_load(fp)
 
     # config the `sys` section
     sys_config(config, config_path)
-
     if "exp_manager" in config.get("qlib_init"):
         qlib.init(**config.get("qlib_init"))
     else:
